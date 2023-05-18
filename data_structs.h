@@ -20,4 +20,11 @@ void push(stack**, int);
 
 
 
+/* DICTIONARY IMPLEMENTATION PROTOTYPES */
+typedef struct {
+	int key;
+	char* value;
+} dictionary;
+
+
 #endif

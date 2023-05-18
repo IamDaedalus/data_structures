@@ -29,3 +29,27 @@ Stack
         * IsEmpty   -   This checks if there are still elements in the
                         Stack
         * Init      -   This operation initialises a new Stack
+
+
+Dictionary
+    THe dictionary is a data structure that works through a key-value
+    pair system where keys are unique values that act as retrieval 
+    points for the associated value. It is a provides a good way to 
+    search and retrieve data only from its key.
+    A useful implementation of Dictionary is using it in a real world
+    Dictionary implementation or for storing students names and their
+    scores in a school grading system.
+    I'll be implementing the following basic features of the Dictionary
+    data structure
+        * Insert    -   This operation adds a new entry into the Dictionary
+                        data structure. Before an entry is added we make
+                        sure that its key is unique otherwise we don't add
+        * Delete    -   This operation removes an entry from the Dictionary
+                        by based on the key of the item
+        * Search    -   This operation searches the entire Dictionary struct
+                        for a value based on a key provided
+        * Clear     -   This operation removes every entry in the structure
+                        for easy reusability
+        * Update    -   This operation allows changing the value of the key
+                        provided so without needing to modify the entire
+                        structure. This also saves on memory
