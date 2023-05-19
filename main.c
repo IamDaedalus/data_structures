@@ -1,29 +1,25 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "data_structs.h"
+#include <stdio.h>
 
-int main() {
-    stack* s = init_stack();
+int main(void) {
+	dictionary* dict = init_dict();
 
-    // Test push operation
-    push(&s, 10);
-    push(&s, 20);
-    push(&s, 30);
+	insert(&dict, 0, "hello");
+	insert(&dict, 1, "world");
+	insert(&dict, 2, "Manny");
 
-    // Test peek operation
-    printf("Peek: %d\n", peek(&s));
+	printf("\nPrinting a new dictionary\n");
+	print_dict(&dict);
 
-    // Test pop operation
-    printf("Pop: %d\n", pop(&s));
-    printf("Pop: %d\n", pop(&s));
-    printf("Pop: %d\n", pop(&s));
+	printf("before change 0 was %s\n", valueof(&dict, 0));
+	_delete(&dict, 0);
+	printf("after change 0 is %s\n", valueof(&dict, 0));
 
-    // Test pop operation on an empty stack
-    printf("Pop: %d\n", pop(&s));
+	insert(&dict, 756, "another insert");
+	printf("\nPrinting a new dictionary\n");
+	print_dict(&dict);
 
-    // Clean up memory
-	free(s);
+	free_dict(dict);
 
-    return 0;
+	return 0;
 }
-
