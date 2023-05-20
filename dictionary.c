@@ -103,36 +103,35 @@ char* valueof(dictionary** head, int key) {
  */
 void insert(dictionary** head, int key, char* value) {
 	dictionary* dict = *head;
-	/* check if the key already exists and is not a negative num */
-	if (key < 0 || exists(head, key)) {
-		printf("Your key %d already exists or is a negative number and can't be inserted\n", key);
-		printf("Consider using a unique key or non-negative number...\n");
-		return;
-	}
-
-	/*
-	 * the first check makes sure there are no empty slots in the slots stack
-	 * that we can pop. if there are none, we insert by using the cur_index
-	 * value
-	 */
-	if (stack_empty(&dict->slots)) {
-		if (dict->cur_index <= MAX_SIZE - 1) {
-			dict->cur_index++;
-			dict->entries[(*head)->cur_index].key = key;
-			dict->entries[(*head)->cur_index].value = malloc(strlen(value) + 1);
-			if (dict->entries[(*head)->cur_index].value)
-				strcpy(dict->entries[dict->cur_index].value, value);
-			else
-				printf("an error occured\n");
+	/* check if the dictionary is full */
+	if (dict->cur_index < MAX_SIZE) {
+		/* check if the key already exists and is not a negative num */
+		if (key < 0 || exists(head, key)) {
+			printf("Your key %d already exists or is a negative number and can't be inserted\n", key);
+			printf("Consider using a unique key or non-negative number...\n");
+			return;
 		}
-	} else {
+
+		/*
+		 * the first check makes sure there are no empty slots in the slots stack
+		 * that we can pop. if there are none, we insert by using the cur_index
+		 * value
+		 */
+		if (stack_empty(&dict->slots)) {
+			if (dict->cur_index <= MAX_SIZE - 1) {
+				dict->cur_index++;
+				dict->entries[dict->cur_index].key = key;
+				dict->entries[dict->cur_index].value = malloc(strlen(value) + 1);
+				dict->entries[dict->cur_index].value = strdup(value);
+			}
+		} else {
 			int index = pop(&dict->slots);
 			dict->entries[index].key = key;
 			dict->entries[index].value = malloc(strlen(value) + 1);
-			if (dict->entries[index].value)
-				strcpy(dict->entries[index].value, value);
-			else
-				printf("an error occured\n");
+			dict->entries[index].value = strdup(value);
+		}
+	} else {
+		printf("dictionary is full consider creating a new one\n");
 	}
 }
 
@@ -143,20 +142,18 @@ void insert(dictionary** head, int key, char* value) {
  * @dict: the dictionary in question
  */
 void clear_dict(dictionary** dict) {
-	if (*dict) {
-		dictionary* d = *dict;
-		int i;
+	dictionary* d = *dict;
+	int i;
 
-		for (i = 0; i < MAX_SIZE; i++) {
-			d->entries[i].key = -1;
-			d->entries[i].value = NULL;
-		}
-		if (!stack_empty(&d->slots)) {
-			clear_stack(&d->slots);
-		}
-
-		printf("cleared the dictionary\n");
+	for (i = 0; i < MAX_SIZE; i++) {
+		d->entries[i].key = -1;
+		d->entries[i].value = NULL;
 	}
+	if (!stack_empty(&d->slots)) {
+		clear_stack(&d->slots);
+	}
+
+	printf("cleared the dictionary\n");
 }
 
 /**
@@ -223,6 +220,7 @@ void free_dict(dictionary** head) {
 	dict->slots = NULL;
 	free(dict);
 	(*head) = NULL;
+	dict->slots = NULL;
 }
 
 

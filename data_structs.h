@@ -67,4 +67,12 @@ void clear_dict(dictionary**);
 void update(dictionary**, int, char*);
 void free_dict(dictionary**);
 
+
+/* QUEUE IMPLEMENTATION PROTOTYPES */
+typedef struct {
+	int data;
+	int first;
+	int last;
+} queue_t;
+
 #endif
