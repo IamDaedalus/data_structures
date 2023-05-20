@@ -5,13 +5,12 @@
 #include <stdlib.h>
 
 /**
- * init_stack_cap - 	creates a new empty stack that needs to
+ * init_stack - 	creates a new empty stack that needs to
  * freed once it's done
  * Return: returns an empty stack that can be populated
  */
 stack* init_stack() {
 	stack* new = malloc(sizeof(stack));
-	int i;
 	if (!new)
 		return NULL;
 
@@ -88,7 +87,6 @@ int pop(stack** head) {
  * Return: returns true or false depending on if it contains elements
  */
 bool stack_empty(stack** head) {
-	stack* s = *head;
 	/*
 	 * this works because per the init function every stack is initialised
 	 * with the top value as -1 which is an invalid index for any array
@@ -97,8 +95,32 @@ bool stack_empty(stack** head) {
 	return (*head)->top == -1;
 }
 
+/**
+ * free_stack - frees a stack from memory
+ * @s: the stack to free
+ */
 void free_stack(stack* s) {
 	free(s->data);
 	free(s);
 	printf("stack successfully freed\n");
 }
+
+/**
+ * clear_stack - clear all entries from the stack and set the top to -1
+ * @st: the stack structure to clear
+ */
+void clear_stack(stack** st) {
+	int i;
+	if (!stack_empty(st)) {
+		(*st)->top = -1;
+		/* LOOK INTO THIS AND MAKE SURE IT DOESN'T BITE YOU LATER */
+		for (i = 0; i < MAX_SIZE; i++) {
+			if ((*st)->data[i]) {
+				(*st)->data[i] = 0;
+			}
+		}
+	} else {
+		printf("the stack is already empty. you can populate it with entries\n");
+	}
+}
+

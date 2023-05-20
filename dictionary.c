@@ -48,7 +48,7 @@ dictionary* init_dict()
  * @key: the unique key to find
  * Return: returns the index of the key or -1 if not found
  */
-int search(dictionary** head, int key) {
+int search_dict(dictionary** head, int key) {
 	dictionary* dict = *head;
 	int i;
 
@@ -73,7 +73,7 @@ int search(dictionary** head, int key) {
  * Return: returns true if the key is found and vice versa
  */
 bool exists(dictionary ** head, int key) {
-	return search(head, key) != -1;
+	return search_dict(head, key) != -1;
 }
 
 /**
@@ -85,7 +85,7 @@ bool exists(dictionary ** head, int key) {
  */
 char* valueof(dictionary** head, int key) {
 	dictionary* dict = *head;
-	int i = search(&dict, key);
+	int i = search_dict(&dict, key);
 
 	if (exists(&dict, key)) {
 		return dict->entries[i].value;
@@ -120,13 +120,42 @@ void insert(dictionary** head, int key, char* value) {
 			dict->cur_index++;
 			dict->entries[(*head)->cur_index].key = key;
 			dict->entries[(*head)->cur_index].value = malloc(strlen(value) + 1);
-			strcpy(dict->entries[dict->cur_index].value, value);
+			if (dict->entries[(*head)->cur_index].value)
+				strcpy(dict->entries[dict->cur_index].value, value);
+			else
+				printf("an error occured\n");
 		}
 	} else {
 			int index = pop(&dict->slots);
 			dict->entries[index].key = key;
 			dict->entries[index].value = malloc(strlen(value) + 1);
-			strcpy(dict->entries[index].value, value);
+			if (dict->entries[index].value)
+				strcpy(dict->entries[index].value, value);
+			else
+				printf("an error occured\n");
+	}
+}
+
+/**
+ * clear_dict - this clears every entry in the dictionary and is different
+ * from free_dict because this doesn't free the values from memory. think
+ * of this as a reset minus the memory free. useful for reusing the structure
+ * @dict: the dictionary in question
+ */
+void clear_dict(dictionary** dict) {
+	if (*dict) {
+		dictionary* d = *dict;
+		int i;
+
+		for (i = 0; i < MAX_SIZE; i++) {
+			d->entries[i].key = -1;
+			d->entries[i].value = NULL;
+		}
+		if (!stack_empty(&d->slots)) {
+			clear_stack(&d->slots);
+		}
+
+		printf("cleared the dictionary\n");
 	}
 }
 
@@ -138,7 +167,7 @@ void insert(dictionary** head, int key, char* value) {
  */
 void _delete(dictionary** dict, int key) {
 	dictionary* d = *dict;
-	int i = search(&d, key);
+	int i = search_dict(&d, key);
 	
 	if (i != -1) {
 		d->entries[i].key = -1;
@@ -159,7 +188,7 @@ void _delete(dictionary** dict, int key) {
  */
 void update(dictionary** dict, int key, char* new) {
 	dictionary* d = *dict;
-	int pos = search(&d, key);
+	int pos = search_dict(&d, key);
 	
 	if (pos != -1) {
 		d->entries[pos].value = strcpy(d->entries[pos].value, new);
@@ -173,8 +202,8 @@ void update(dictionary** dict, int key, char* new) {
  * free_dict - this frees the dictionary from memory
  * @head: the dictionary to free
  */
-void free_dict(dictionary* head) {
-	dictionary* dict = head;
+void free_dict(dictionary** head) {
+	dictionary* dict = *head;
 	int i;
 
 	/* 
@@ -191,7 +220,9 @@ void free_dict(dictionary* head) {
 
 	/* we need to free the stack as well */
 	free_stack(dict->slots);
+	dict->slots = NULL;
 	free(dict);
+	(*head) = NULL;
 }
 
 

@@ -3,6 +3,11 @@ from scratch with a few weeks of C programming knowledge. I'll be
 implementing the following simple data structures and their operations
 with focus being on getting the work done and not aiming for the most
 efficient or fastest implementation yet.
+I am also restricting my implementations to 2048 entries for each data
+structure as a restriction so that I can focus on results and not go 
+too much into details about how I implement them. I know 2048 is not
+realistic but it's enough for what I am trying to achieve which is
+results!
 
 With that said I may come back periodically or will be updating the repo
 with more data structures and as time goes I might be updating the old

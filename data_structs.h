@@ -1,11 +1,9 @@
 #ifndef DATA_STRUCTS_H
 #define DATA_STRUCTS_H
 
-
-
 #include <stdbool.h>
 
-#define MAX_SIZE 1024
+#define MAX_SIZE 2048
 /* STRUCTS IMPLEMENTATION PROTOTYPES */
 /**
  * @data: 	the actual data stored in the item as an array
@@ -21,6 +19,7 @@ stack* init_stack();
 int peek(stack**);
 int pop(stack**);
 bool stack_empty(stack**);
+void clear_stack(stack**);
 void push(stack**, int);
 void free_stack(stack*);
 
@@ -59,13 +58,13 @@ typedef struct {
 /* >>>>>> DICTIONARY HELPER PROTOTYPES <<<<< */
 dictionary* init_dict();
 bool exists(dictionary**, int);
-int search(dictionary**, int);
+int search_dict(dictionary**, int);
 char* valueof(dictionary**, int);
 void print_dict(dictionary**);
 void insert(dictionary**, int, char*);
 void _delete(dictionary**, int);
-void clear(dictionary**);
+void clear_dict(dictionary**);
 void update(dictionary**, int, char*);
-void free_dict(dictionary*);
+void free_dict(dictionary**);
 
 #endif
